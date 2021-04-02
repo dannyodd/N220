@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N220 - Input Exercises Prompt Three</title>
+</head>
+<body>
+<!--    3) Password Protected
+
+Create an application with two input fields and one button.
+
+When the button is clicked, verify the user has written these (exact) strings in the first and second field:
+
+First field should be  "Username"
+Second field should be  "Password"
+If the two fields match, update a DIV on the page with the text "Success" or else "Wrong information".
+
+For this assignment: use only one if statement to to the check.
+
+Remember you'll need to use the double-equals (==) to check for equality, and the double-ampersand to check if two things are true.
+
+if( (oneThingIsTrue) && (anotherThingIsTrue) ) {
+
+ 
+} -->
+<script>
+    function userAuth() {
+        //Define variables based on user input username and password, and define a variable to use when updating the message in the <div>
+        let inputUsername = document.getElementById("username");
+        let inputPassword = document.getElementById("password");
+        let msgDiv = document.getElementById("msgDiv"); 
+        //console.log(inputUsername.value);
+        //console.log(inputPassword.value);
+
+        //Create an if/else condition to compare the user input username and password to the actual username and password (admin and password respectively)
+        if ((inputUsername.value == "admin") && (inputPassword.value == "password")) { 
+            msgDiv.innerHTML = "You have logged in successfully!"
+        } else {
+            msgDiv.innerHTML = "Username and/or Password Incorrect: Access Denied."
+        };
+    }
+</script>
+    <!-- Create two input boxes for entering the username and password, and create a submit button that invokes the userAuth() function -->
+    <input type="text" id="username" placeholder="Enter Username">
+    <input type="text" id="password" placeholder="Enter Password">
+    <button type="submit" onclick="userAuth()">Log In</button>
+    <!-- Create the div to display output based on the success/failure of the login -->
+    <div id="msgDiv">
+
+    </div>
+</body>
+</html>
