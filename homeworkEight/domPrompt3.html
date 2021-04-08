@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!--// Over and Out
+
+// Write the markup and JavaScript to place a square div on the page (100px x 100px), with a blue background. 
+//Using onmouseover and onmouseout (instead of "onclick"),
+// change the div's color to black when the mouse is over the div, and back to blue when the mouse leaves.-->
+<body>
+    <script>
+        //Create the div element and set its ID attribute
+        var divBox = document.createElement("div");
+        divBox.setAttribute('id','box');
+        //Set the div element's height, width, and default color
+        divBox.style.height = 100 + "px";
+        divBox.style.width = 100 + "px";
+        divBox.style.backgroundColor = "blue";
+        //Add the div element to the page
+        document.body.appendChild(divBox);
+        //Make the background black on mouseover
+        document.getElementById('box').onmouseover = function turnBlack() {
+            box.style.backgroundColor = "black";
+        }
+        //Make the background blue again on mouseout
+        document.getElementById('box').onmouseout = function turnBlue() {
+            box.style.backgroundColor = "blue";
+        }
+    </script>
+    
+</body>
+</html>

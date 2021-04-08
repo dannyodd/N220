@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!--/*Thats a lot of div
+
+Write a loop that puts 100 square divs (20px x 20px) on the page, each with a different background color. Set their float CSS attribute to left.*/ -->
+<body>
+    <script>
+        //Create the 100 colors that will be used as the backgrounds for the divs and store them in an array
+        //Initialize the array to store 100 colors
+        var allColors = [];
+        function makeColors() {
+
+            //Create a "for" loop to iterate 100 times, generating a random color and appending it to the allColors list each time it runs
+            for (let k = 0; k < 100; k++) {
+                //Create the variable to generate a random hex color
+                var randColor = '#' + Math.random().toString(16).substr(2,6);
+                //Append the random color to the allColors list
+                allColors.push(randColor);
+            }
+            //Return the allColors list
+            return allColors;
+            //Test the output
+            //console.log(allColors);
+        }
+        //Create the function to make the divs
+        function makeDivs() {
+            //Create the main "for" loop to iterate 100 times, creating/styling/appending a div each iteration
+            for (let i = 0; i < 100; i++) {
+                //Create the div element
+                var makeDiv = document.createElement("div");
+                //Style the div element's height and width
+                makeDiv.style.height = 20 + "px";
+                makeDiv.style.width = 20 + "px";
+                //Style the div's float property to "Left"
+                makeDiv.style.float = "Left";
+                //Set the background color to the corresponding value indexed in the allColors array
+                makeDiv.style.backgroundColor = allColors[i];
+                //Add the div element to the page
+                document.body.appendChild(makeDiv);
+                //Test code
+                //makeDiv.style.backgroundColor = "green";
+                //console.log(makeDiv);
+                //console.log(allColors);
+            }
+        }
+        makeColors();
+        makeDivs();
+
+    </script>
+    
+</body>
+</html>

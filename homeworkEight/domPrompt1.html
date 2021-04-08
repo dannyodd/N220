@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+ <!-- Peak Pixels
+
+Write the markup and CSS to place a square div on the page. 100px by 100px, green background.
+Make it so that when the div its clicked, it increases its size by 10% every time.
+
+Hints:
+
+Make a variable to store the height and with of the object
+to set the height and width, set to varName + "px"
+10% is .1 bigger,or 1.1 * the original size  -->
+<body>
+    <script>
+        //Create the div element as "divBox" and set its ID to "box"
+        var divBox = document.createElement("div");
+        divBox.setAttribute('id','box');
+        //Set the initial values for height, width, and the green background color
+        divBox.style.backgroundColor = "green";
+        divBox.style.height = 100 + "px";
+        divBox.style.width = 100 + "px";
+
+        //Add the divBox element to the page
+        document.body.appendChild(divBox);
+        //Define variables for use when changing the height and width of the div
+        var boxHeight = divBox.style.height;
+        var boxWidth = divBox.style.width;
+
+        //Define the onclick function to get the element "box" and enlarge the height and width by 10% each click
+        document.getElementById('box').onclick = function expandOnClick() {
+            //Calculate the new boxHeight and boxWidth values by parsing the number from their corresponding style elements, multiplying them,
+            // then appending "px" to the end so they can be used as styles again
+            boxHeight = parseInt(boxHeight) * 1.1 + "px";
+            boxWidth = parseInt(boxWidth) * 1.1 + "px";
+            //Update the height & width style elements with the newly calculated values, and update the page with the updated div
+            divBox.style.height = boxHeight;
+            divBox.style.width = boxWidth;
+            document.body.appendChild(divBox);
+            checkValues();
+            };
+
+
+
+
+
+
+//Function to test values
+function checkValues() {
+    console.log(boxHeight);
+    console.log(boxWidth);
+    console.log(divBox.getAttribute('id'));
+}
+
+
+//checkValues();
+    </script>
+
+</body>
+
+</html>
