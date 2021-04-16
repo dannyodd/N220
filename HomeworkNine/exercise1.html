@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 1</title>
+</head>
+<body>
+    <!--Its just average
+
+    Create an application that:
+
+    Takes in a list of comma-separated numbers from the user
+    Splits that list into an array of numbers
+    Converts the string version of the numbers into number versions
+    Loops through the array and sums up the values
+    Calculates the average of the array
+    Displays to the user
+    The average
+    The sum
+    Removes the text from the input so the user can type in new numbers -->
+
+    <!--Create the input box for the user to enter a list of numbers as a string-->
+    <input type="text" id="numInput" name="numInput" placeholder="">
+    <button onclick="doTheThing()">Do The Thing</button>
+    <script>
+
+        function doTheThing() {
+            //Assign the numInput string to a variable
+            var str = document.getElementById("numInput").value;
+            //console.log(str);
+            //Split the numInput string (str), on the commas, into an array
+            var splt = str.split(",");
+            //console.log(splt);
+            //Convert the string-type objects in the array to their numeric values
+            for (let i = 0; i < splt.length; i++) {
+                splt[i] = Number(splt[i]);
+                //console.log(splt);
+            }
+            //console.log(splt);
+            //Calculate the sum of the numbers in the array
+            var sum = 0;
+            for (let j = 0; j < splt.length; j++) {
+                sum += splt[j];
+                //console.log(sum);
+            }
+            //console.log(sum);
+            //Calculate the average
+            let avg = sum / splt.length;
+            //console.log(avg); 
+            //Display the results in a div with ID "results"
+            //Create the div
+            let displayDiv = document.createElement("div");
+            //Assign an ID
+            displayDiv.setAttribute("id", "results");
+            //Add the div to the page
+            document.body.append(displayDiv);
+            //Get the new div element by ID & define the content text
+            resultsGet = document.getElementById("results");
+            resultsGet.innerHTML = "Sum: " + sum + "<br> Average: " + avg;
+
+            //Reset the text input box
+            document.getElementById('numInput').value = "";
+        }
+    </script>
+</body>
+</html>
