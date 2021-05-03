@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt One</title>
+</head>
+<body>
+    <!-- 1. Color Changer
+
+Create an application with three grey, square divs, in a row. 
+They should be 200px by 200px, and all floated left. 
+Give them a margin of 5px.
+
+Using only one event handler, write event listeners to respond 
+to a click on each element. Each element should change to a different 
+color: one red, one green, and one blue. Use a data attribute on the 
+elements to store the color to be changed to. -->
+    <script>
+
+        function createDivs() {
+            //Make the divs with their colors stored in their data attributes
+            for(let i = 0; i < 3; i++) {
+                var colors = ['red', 'green', 'blue'];
+                var newDiv = document.createElement("div");
+                newDiv.style.backgroundColor = "gray";
+                newDiv.style.height = 200 + "px"
+                newDiv.style.width = 200 + "px"
+                newDiv.setAttribute("data-color", colors[i]);
+                // newDiv.setAttribute("onclick", changeColors);
+                newDiv.setAttribute("id", "div" + i );
+                // newDiv.id.addEventListener(click, changeColors)
+                console.log(newDiv.id);
+                console.log(colors[i]);
+
+                document.body.append(newDiv);
+                document.getElementById("div" + i).addEventListener("click", changeColors);
+            }
+        }
+        function changeColors() {
+            event.target.style.backgroundColor = event.target.getAttribute('data-color');
+            console.log(event.target.getAttribute('data-color'))
+        }
+        createDivs();
+    </script>
+</body>
+</html>
