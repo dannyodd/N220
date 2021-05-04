@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan Todd - N220 - Hangman</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.min.js"></script>
+    <script>
+        //Create the dictionary array that will be used as source for random words
+        var rawText = "hobbies abhorrent underwear exchange nosy aftermath elfin continue count phone thrill seal servant venomous donkey coil eyes confused stingy hat guttural horrible stop weight cub mighty petite calendar fly small quill hang fortunate poke quizzical market magic window provide wry chalk cars crow connection driving momentous acrid damp pocket jobless fierce pleasant fear money lame expert frantic languid like wandering";
+        var dictArray = rawText.split(" ");
+        //console.log(dictArray);
+        //Initialize an array to store the randomly generated wordlist
+        var wordGenArray = [];
+        //Set up an array to store the letters of the alphabet
+        var letters = "abcdefghijklmnopqrstuvwxyz";
+        var lettersArray = letters.split("");
+        //Initialize a value for the fail counter
+        var failCounter = 0;
+        //console.log(lettersArray);
+        wordGen();
+        genButtons();
+        writeWordBlanks(wordGenArray);
+        makeCanvasDiv();
+        //The following lines create the canvas inside the canvas div and set up the gallows
+        let sketch = function(a) {
+                a.setup = function() {
+                    a.createCanvas(498, 498);
+                    a.background(255);
+                    a.fill(0);
+                    a.rect(100, 350, 300, 25);
+                    a.rect(100, 375, 25, 100);
+                    a.rect(375, 375, 25, 100);
+                    a.rect(375, 50, 25, 300);
+                    a.rect(225, 50, 150, 25);
+                }
+            };
+            new p5(sketch, 'canvasDiv');
+        //This function pulls 10 words at random from the dictArray and assigns them to the wordGenArray
+        function wordGen() {
+            for (let i = 0; i < 10; i++){
+                let randNum = Math.floor(Math.random() * dictArray.length);
+                let newWord = dictArray[randNum];
+                wordGenArray.push(newWord);
+                //console.log(newWord);
+            }
+            return wordGenArray;
+        }
+
+        //This function creates a div, with id wordsDiv, to contain the words on the game board. It then creates a <p> tag
+        //for each word in the array, filling it with underscores for each letter in each word.
+        function writeWordBlanks(wordGenArray) {
+            let wordDiv = document.createElement('div');
+            wordDiv.setAttribute('id', 'wordsDiv');
+            wordDiv.style.cssText = 'position:absolute; height:500px; width: 300px; margin:100px 400px; background-color:red; font-size: 12pt';
+            document.body.appendChild(wordDiv);
+            for (let z = 0; z < wordGenArray.length; z++) {
+                let wordsDiv = document.getElementById('wordsDiv');
+                let newP = document.createElement('p');
+                newP.style.cssText = 'margin: 30px 60px'
+                for (let y = 0; y < wordGenArray[z].length; y++) {
+                    newP.innerHTML = newP.innerHTML + "_ ";
+                }
+                wordsDiv.appendChild(newP);
+            }
+        }
+
+        //This function generates a container for the onscreen keyboard buttons for the game, as well as the buttons themselves
+        function genButtons() {
+            //Create the div to store the buttons
+            var buttonDiv = document.createElement('div');
+            buttonDiv.style.cssText = 'position:absolute; height:100px; width: 270px; margin:600px; background-color: black;';
+            buttonDiv.setAttribute('id', 'keyboard');
+            document.body.appendChild(buttonDiv);
+            //Create a loop to generate the buttons from the lettersArray
+            for (let j = 0; j < lettersArray.length; j++){
+                let keyboard = document.getElementById('keyboard');
+                let newButton = document.createElement('button');
+                newButton.setAttribute('type', 'button');
+                newButton.setAttribute('name', lettersArray[j]);
+                newButton.setAttribute('data-letter', lettersArray[j]);
+                // newButton.setAttribute('onclick', 'searchWords('' + lettersArray[j] + '))';
+                newButton.innerHTML = lettersArray[j];
+                newButton.style.cssText = 'position: relative; height: 20px; width: 20px; margin: 5px; font-family: arial; font-size: 10pt';
+                newButton.addEventListener('click', function(){
+                    searchAllWordsForLetter()
+                    });
+                keyboard.appendChild(newButton);
+                // console.log(newButton);
+                // console.log(lettersArray[j]);
+                // console.log(newButton.getAttribute('data-letter'))
+            };
+        }
+        //console.log(wordGenArray);
+
+        //This function scans all words in the wordGenArray for the letter corresponding to the button when it is clicked,
+        //and disables the button on click. If the letter is present in one of the words in the array, a function is invoked to 
+        //retrieve all indices of the letter and write them into arrays in an array of objects. If the letter is not present in any 
+        //words in the array, it adds 1 to the failCounter and invokes a function to check the end condition of the game.
+        function searchAllWordsForLetter() {
+            var letter = event.target.getAttribute('data-letter');
+            var letterPresent = false;
+            //console.log(letter);
+            event.target.setAttribute("disabled", true);
+            for (let k=0; k<wordGenArray.length;k++){
+                let string = wordGenArray[k];
+                //console.log(string);
+                //Search each string to see if it includes the letter; If it encounters an instance of the letter,
+                //it sets the value of letterPresent to "true", invokes the searchIndices function (passing letter as an argument),
+                //and breaks the loop. Else if the value of letterPresent is still not true when the end of the array is reached, 
+                //it is set as false and the failCounter goes up by 1 and the checkEndCnd function is invoked with failCounter as an argument.
+
+                if(string.includes(letter) === true){
+                    //console.log(string.includes(letter));
+                    letterPresent = true;
+                    console.log(letterPresent);
+                    searchIndices(letter);
+                    break;
+                } else if (k == wordGenArray.length -1 && letterPresent != true) {
+                    failCounter++;
+                    //checkEndCnd(failCounter);
+                    draw();
+                    console.log(letterPresent);
+                    console.log(failCounter);
+                }
+                
+            }
+            
+        } //End of searchAllWordsForLetter function
+
+        //This function is called when a letter is successfully found in the wordGenArray. It retrieves all indices of the letter in all words
+        //in the array and writes them each into an array object within an array. This array of arrays is then used to fill in the blanks on the 
+        //game board accordingly
+
+        function searchIndices(letter) {
+            //console.log(letter);
+            //Main outer loop to iterate through wordGenArray
+            let indicesArray = new Array();
+            for (let l = 0; l < wordGenArray.length; l++) {
+                let string=wordGenArray[l];
+                let indices = new Array();
+                //Inner loop to scan each individual word in the wordGenArray and return an array of all indices of the letter in the word
+                for (let m = 0; m < string.length; m++) {
+                    if(string[m] === letter) {
+                        indices.push(m);
+                    } else {
+                        //do nothing
+                    }
+                console.log(string[m]);
+                console.log(indices);  
+                
+                }
+                indicesArray.push(indices);
+            }
+            console.log(indicesArray);
+            //fillLetters(indicesArray, letter);
+        }
+
+        //This function fills in the letters of words on the board that correspond with the letter of the button click which kicked 
+        //off the sequence that calls it. It accepts the letter, and its array of arrays containing indices of that letter (generated by searchIndicies(letter))
+
+        
+        //Drawing functions start here
+
+        //This function creates a div to contain the canvas
+        function makeCanvasDiv() {
+            let newCanvasDiv = document.createElement('div');
+            newCanvasDiv.setAttribute('id', 'canvasDiv');
+            newCanvasDiv.style.cssText = 'position:absolute; height:498px; width: 498px; margin:100px 700px; background-color:lightgray; border: 1px dashed blue';
+            document.body.appendChild(newCanvasDiv);
+        }
+        
+        // a.createCanvas(498, 498);
+        //             a.background(255);
+        //             a.fill(0);
+        //             a.rect(100, 350, 300, 25);
+        //             a.rect(100, 375, 25, 100);
+        //             a.rect(375, 375, 25, 100);
+        //             a.rect(375, 50, 25, 300);
+        //             a.rect(225, 50, 150, 25);
+         //This function draws the hanging man based on the failCounter value. When failcounter = 0, it does nothing. When failcounter = 1,
+         // it draws the rope. failCounter = 2 draws the head, and so-on until all parts are drawn and the losing end condition is satisfied
+         
+        function draw() {
+             if (failCounter == 0) {
+                 //do nothing
+             } else if (failCounter == 1) {
+                line(225, 50, 225, 100);
+             } else if (failCounter == 2) {
+                 line(x1, y1, x2, y2);
+                 ellipse(x1, y1, width, height);
+             } else if (failCounter == 3) {
+                line(x1, y1, x2, y2);
+                ellipse(x1, y1, width, height);
+                line(x1, y1, x2, y2);   
+             } else if (failCounter == 4) {
+                line(x1, y1, x2, y2);
+                ellipse(x1, y1, width, height);
+                line(x1, y1, x2, y2);  
+                line(x1, y1, x2, y2); 
+             } else if (failCounter == 5) {
+                line(x1, y1, x2, y2);
+                ellipse(x1, y1, width, height);
+                line(x1, y1, x2, y2);  
+                line(x1, y1, x2, y2);
+                line(x1, y1, x2, y2); 
+             } else if (failCounter == 6) {
+                line(x1, y1, x2, y2);
+                ellipse(x1, y1, width, height);
+                line(x1, y1, x2, y2);  
+                line(x1, y1, x2, y2);
+                line(x1, y1, x2, y2);
+                line(x1, y1, x2, y2);
+             } else if (failCounter == 7) {
+                line(x1, y1, x2, y2);
+                ellipse(x1, y1, width, height);
+                line(x1, y1, x2, y2);  
+                line(x1, y1, x2, y2);
+                line(x1, y1, x2, y2); 
+                line(x1, y1, x2, y2);
+                line(x1, y1, x2, y2);
+             }
+        }
+
+
+
+        //This function disables the clicked button, scans the wordGenArray for the letter of the corresponding button,
+        //fills in the blanks with the given letter on success or adds to the fail counter if unsuccessful
+            //Outer If/Else loop to check if a letter exists in the wordGenArray. Adds to fail counter if unsuccessful,
+            //searches each string in the array & returns indices of the letter if successful
+            // if (wordGenArray.includes(letter) === true) {
+            //     //loop to iterate through the wordGenArray
+            //     for (let k = 0; k < wordGenArray.length; k++) {
+            //     var string = wordGenArray[k];
+            //     var indices = [];
+            //         for (let l = 0; l < string.length; l++) {
+            //             if(string[l] === letter) {
+            //                 indices.push(l);
+            //             } else {continue;}
+            //             return indices;
+                    //Pass the indices to the function that fills in the blanks
+        //             } 
+
+        //         }
+        //     }           
+        // }
+
+    </script>
+</body>
+</html>
